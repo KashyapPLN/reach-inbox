@@ -1,0 +1,18 @@
+.email-detail{
+    width:20%;
+}
+.leadDetails,.activities{
+    padding:1vw;
+    display:flex;
+    flex-direction: column;
+    gap:30px;
+}
+
+.lead-heading,.activities-heading{
+    height:40px;
+    padding: 4px 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}

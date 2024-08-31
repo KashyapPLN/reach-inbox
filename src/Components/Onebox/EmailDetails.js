@@ -1,15 +1,38 @@
 import React from 'react';
-import './page1.css';
+import './emailDetails.css';
 
-export default function EmailDetail() {
+export default function EmailDetail({mode}) {
   return (
-    <div className="email-detail">
-      <h3>New Product Launch</h3>
-      <p><strong>From:</strong> jeanne@icloud.com</p>
-      <p><strong>To:</strong> lennon.j@mail.com</p>
-      <p>Hi [First Name],</p>
-      <p>I would like to introduce you to SaaSgrow, a productized design service specifically tailored for SaaS startups...</p>
-      <button className="reply-btn">Reply</button>
+    <div className="email-detail" style={{color:mode==='dark'? 'white':'black'}}>
+     <div className='leadDetails'>
+<div className='lead-heading' style={{
+            color: mode === 'dark' ? 'white' : 'black', backgroundColor: mode === 'dark' ? '#25262B' : 'white',
+            border: mode === 'dark' ? 'none' : '1px solid black'
+          }}>
+Lead Details
+</div>
+<div style={{fontSize:'14px',display:'flex',flexDirection:'column',gap:'20px'}}>
+<div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}><span>Name</span><span>Orlando</span></div>
+      <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}><span>Contact No</span><span>+54-9062827869</span></div>
+      <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}><span>Email ID</span><span>orlando@gmail.com</span></div>
+      <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}><span>LinkedIn</span><span>linkedin.com/in/timvadde</span></div>
+      <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}><span>Company Name</span><span>Reachinbox</span></div>
+      </div>
+     </div>
+     <div className='activities'>
+<div className='activities-heading' style={{
+            color: mode === 'dark' ? 'white' : 'black', backgroundColor: mode === 'dark' ? '#25262B' : 'white',
+            border: mode === 'dark' ? 'none' : '1px solid black'
+          }}>
+  Activities
+</div>
+<p><strong>Campaign Name:</strong> 3 Steps | 5 Days in Sequence</p>
+        <ul>
+          <li><strong>Step 1:</strong> Email - Sent 3rd Feb</li>
+          <li><strong>Step 2:</strong> Email - Opened 5th Feb</li>
+          <li><strong>Step 3:</strong> Email - Opened 5th Feb</li>
+        </ul>
+     </div >
     </div>
   );
 }

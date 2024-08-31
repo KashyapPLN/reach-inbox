@@ -1,68 +1,64 @@
 import React, { useEffect, useState } from 'react';
 import './onebox.css';
 import Sidebar from './Sidebar';
-import eclipse from '../../media/eclipse.svg';
-import sun from '../../media/sun.svg';
-import emptyMsg from '../../media/empty-msg.svg';
-import { Dropdown } from 'react-bootstrap';
+
+import emptyMsg from '../../media/No Message illustration.svg';
+
+import EmailList from './EmailList';
+import OneBoxHeader from './OneBoxHeader';
+import EmailDetail from './EmailDetails';
+import Content from './Content';
+import { useNavigate } from 'react-router-dom';
 
 export default function OneBox() {
-    const [mode,setMode]=useState("dark");
-    const [empty,setEmpty]=useState(true);
+  const [mode,setMode]=useState("dark");
+  const [empty,setEmpty]=useState(true);
+  const [allMails,setAllMails]=useState(null);
+  const [threadId,setThreadId]=useState(null);
+  const navigate=useNavigate();
+  async function getAllMails(key){
+    const url = "https://hiring.reachinbox.xyz/api/v1/onebox/list";
+    try {
+      const response = await fetch(url,{headers:{
+        Authorization: `Bearer ${key}`
+      }});
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      if(data.data.length>0){
+        setAllMails(data.data);
+        setEmpty(false);
+      }
+      console.log(data.data);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+  useEffect(()=>{
+    var myParam = window.location.search.split('token=')[1];
+    localStorage.setItem('token',myParam);
+    console.log(myParam);
+    if(myParam===null||myParam===undefined){
+navigate('/login');
+    }else{
+      getAllMails(myParam);
+    }
+  },[])
+  
   
   return (
     <div className="onebox-container">
         <Sidebar mode={mode}/>
         <div className='onebox-content'>
-            <div className='content-header' style={{backgroundColor:mode==='dark'? '#1F1F1F':'white'}}>
-            <div id='header-text'style={{color:mode==='dark'? 'white':'black'}}>Onebox</div>
-            <div className='content-header-right'>
-            <div className='mode-btns' style={{backgroundColor:mode==='dark'? 'var(--Table-BG, #222426)':'white'}}>
-      <img
-        src={eclipse}
-        alt='Dark Mode'
-        onClick={() => setMode('dark')}
-        style={{ opacity: mode === 'dark' ? 1 : 0.5 }}
-        className={mode === 'dark' ? 'active' : ''}
-      />
-      <img
-        src={sun}
-        alt='Light Mode'
-        onClick={() => setMode('light')}
-        style={{ opacity: mode === 'light' ? 1 : 0.5 }}
-        className={mode === 'light' ? 'active' : ''}
-      />
-    </div>
-            <div>
-            <Dropdown>
-      <Dropdown.Toggle 
-        variant="light" 
-        id="dropdown-basic"
-        style={{ 
-          border: 'none', 
-          backgroundColor: 'transparent', 
-          boxShadow: 'none', 
-          display: 'flex', 
-          alignItems: 'center',
-         color:mode==='dark'? 'white' : 'black'
-        }}
-        className="custom-dropdown-toggle"
-      >
-        Tim's workspace
-        </Dropdown.Toggle>
-
-      <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-            </div>
-            </div>
-            </div>
+       <OneBoxHeader mode={mode} setMode={setMode}/>
             <div className='onebox-main-content' style={{backgroundColor:mode==='dark'? 'black':'white'}}>
 {empty&&<div className='empty-div'><img className='empty-msg' src={emptyMsg}/></div>}
-            </div>
+{!empty&&<EmailList mode={mode} allMails={allMails} threadId={threadId} setThreadId={setThreadId}/>}
+{!empty&&<Content mode={mode} threadId={threadId}/>}
+{!empty&&<EmailDetail mode={mode}/>}
+            </div>          
         </div>
            </div>
   )
