@@ -14,7 +14,7 @@ navigate('/');
     }
   },[])
   function signUpWithGoogle(){
-window.open('https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=http://localhost:3000/');
+window.open('https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=https://reach-inbox-onebox-task.netlify.app/');
   }
   return (
     <div className="login-container">
