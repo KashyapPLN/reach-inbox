@@ -1,0 +1,15 @@
+.modal-dark .modal-content {
+    background-color: #343a40;
+    color: white;
+  }
+
+  .modal-light .modal-content {
+    background-color: white;
+    color: black;
+  }
+
+/* Custom styles for React-Quill editor */
+.custom-quill-editor .ql-container {
+    height: 200px; 
+    }
+

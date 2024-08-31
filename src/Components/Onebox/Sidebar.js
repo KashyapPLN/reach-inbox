@@ -8,6 +8,7 @@ import send from '../../media/send.svg';
 import menu from '../../media/menu.svg';
 import bar from '../../media/bar.svg';
 import inbox from '../../media/inbox.svg';
+import { Badge } from 'react-bootstrap';
 
 export default function Sidebar({mode}) {
   useEffect(()=>{
@@ -33,7 +34,12 @@ export default function Sidebar({mode}) {
         <img src={mail} alt="mail"/>
         <img src={send} alt="send"/>    
         <img src={menu} alt="menu"/>
-        <img src={inbox} alt="inbox"/>
+        <div style={{position:'relative',backgroundColor:'grey',padding:'6px',borderRadius:'8px'}}>
+        <img src={inbox} alt="inbox" />
+        <Badge pill bg="danger" style={{position:'absolute',top:-10,right:-20,fontSize:'10px'}}>
+       12+
+      </Badge>
+      </div>
         <img src={bar} alt="bar"/>
       </div>
     </div>

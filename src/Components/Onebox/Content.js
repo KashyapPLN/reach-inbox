@@ -3,16 +3,21 @@ import './content.css';
 import { Dropdown } from 'react-bootstrap';
 import yellow from  '../../media/yellow.svg'
 import { IoIosMore } from 'react-icons/io';
-import { MdDeleteOutline, MdEdit, MdMarkunreadMailbox, MdPersonRemove } from 'react-icons/md';
+import { MdDeleteOutline, MdEdit, MdMarkunreadMailbox, MdPersonRemove, MdReply } from 'react-icons/md';
 import { FiClock } from 'react-icons/fi';
+import Reply from './Reply';
 
 export default function Content({mode,threadId}) {
 const [threads,setThreads]=useState(null);
+const [show,setShow]=useState(false);
+const handleClose = () => setShow(false);
+const handleShow = () => setShow(true);
   useEffect(()=>{
+   
     async function getAllThreads(){
       const key= localStorage.getItem('token');
       const url = `https://hiring.reachinbox.xyz/api/v1/onebox/messages/${threadId}`;
-      if(key&&threadId!==''){
+      if(key&&threadId!==''&&threadId!==null&&threadId!==undefined){
         try {
           const response = await fetch(url,{headers:{
             Authorization: `Bearer ${key}`
@@ -30,7 +35,10 @@ const [threads,setThreads]=useState(null);
       }
      
     }
-    getAllThreads();
+    if(threadId!=='' && threadId!==null && threadId!==undefined){
+      getAllThreads();
+    }
+   
   },[threadId])
 
   function formatDate(date){
@@ -119,7 +127,11 @@ style={{
 <p classname='thread-to' style={{fontSize:'14px',color:'#AEAEAE'}}>to : {data.toEmail}</p>
 <div className='thread-body' dangerouslySetInnerHTML={{ __html: data.body }}></div>
 </div>)}
+{threads && <button className='create-account mt-4' onClick={handleShow}>
+  <MdReply className='me-1'style={{fontSize:'20px'}} />Reply</button>}
+{threads&&<Reply mode={mode} handleClose={handleClose} handleShow={handleShow} show={show}/>}
 </div>
+
     </div>
   );
 }

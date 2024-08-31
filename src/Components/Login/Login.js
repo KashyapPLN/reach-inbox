@@ -31,7 +31,7 @@ window.open('https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=
           Sign Up with Google
         </button>
         <div style={{display:'flex',justifyContent:'center'}}>
-        <button className="create-account mt-4">Create an Account</button>
+        <button className="create-account mt-4" onClick={signUpWithGoogle} >Create an Account</button>
         </div>
    
         <p>Already have an account? <a href="#">Sign In</a></p>

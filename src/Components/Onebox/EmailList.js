@@ -61,7 +61,7 @@ export default function EmailList({ mode,allMails,threadId,setThreadId }) {
         </div>
         <hr/>
       </div>
-      <div>
+      <div className='all-mail-list'>
         {allMails.length>0 && allMails.map((data)=>
         <div style={{cursor:'pointer'}} key={data.id} 
         onClick={(e)=>{console.log(data.threadId);setThreadId(data.threadId)}}

@@ -4,6 +4,7 @@
     border-right: 1px solid #343A40;
     padding: 1vw; 
 }
+
 .email-list-top{
     display: flex;
     flex-direction: column;
