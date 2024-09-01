@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './reply.css';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { RiArrowDownSFill } from 'react-icons/ri';
 import { FaBolt } from 'react-icons/fa';
 import { IoEyeOutline } from 'react-icons/io5';
 
-export default function Reply({ mode, handleClose, show }) {  
+export default function Reply({ mode,setShow, show ,threadId,threads}) {  
     const [editorText, setEditorText] = useState('');
     const [toEmail,setToEmail]=useState(null);
     const [fromEmail,setFromEmail]=useState(null);
@@ -17,23 +17,39 @@ export default function Reply({ mode, handleClose, show }) {
     const handleEditorChange = (value) => {
         setEditorText(value);
     };
-
-    function handleReply(){
+    const handleClose = () => setShow(false);
+   async function handleReply(){
+        const key= localStorage.getItem('token');
         const req ={
-            "toName": "Mitrajit",
-            "to": "chandra.rupam@gmail.com",
-            "from": "mitrajit2022@gmail.com",
-            "fromName": "Mitrajit",
-            "subject": "Optimize Your Recruitment Efforts with Expert Support",
+            "toName": threads[0].toName,
+            "to": threads[0].toEmail,
+            "from": threads[0].fromEmail,
+            "fromName": threads[0].fromName,
+            "subject": threads[0].subject,
             "body": editorText,
             "references": [
-                "<dea5a0c2-336f-1dc3-4994-191a0ad3891a@gmail.com>",
-                "<CAN5Dvwu24av80BmEg9ZVDWaP2+hTOrBQn9KhjfFkZZX_Do88FA@mail.gmail.com>",
-                "<CAN5DvwuzPAhoBEpQGRUOFqZF5erXc=B98Ew_5zbHF5dmeKWZMQ@mail.gmail.com>",
-                "<a1383d57-fdee-60c0-d46f-6bc440409e84@gmail.com>"
+                threads[0].references
             ],
-            "inReplyTo": "<a1383d57-fdee-60c0-d46f-6bc440409e84@gmail.com>"
+            "inReplyTo": threads[0].inReplyTo
         }
+        console.log(req);
+
+        await fetch(`https://hiring.reachinbox.xyz/api/v1/onebox/reply/${threadId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                 'Authorization': `Bearer ${key}`
+            },
+            body: JSON.stringify(req)
+        }).then(response => response.json())
+            .then(data => {
+                setEditorText('');
+                  handleClose();             
+            })
+            .catch(error => {
+                Alert("Sending failed!")
+                console.error('Error:', error);
+            });
     }
     useEffect(() => {
         setKey(prevKey => prevKey + 1);
@@ -59,6 +75,7 @@ export default function Reply({ mode, handleClose, show }) {
                                 className="search-box" 
                                 type="email" 
                                 placeholder="jeanne@icloud.com" 
+                                value={threads[0].toEmail}
                                 style={{ 
                                     color: mode === 'dark' ? 'white' : 'black', 
                                     backgroundColor: mode === 'dark' ? '#25262B' : 'white',
@@ -71,6 +88,7 @@ export default function Reply({ mode, handleClose, show }) {
                             <input 
                                 type="email" 
                                 placeholder="peter@reachinbox.com" 
+                                value={threads[0].fromEmail}
                                 className="search-box" 
                                 style={{ 
                                     color: mode === 'dark' ? 'white' : 'black', 
@@ -85,6 +103,7 @@ export default function Reply({ mode, handleClose, show }) {
                                 type="text" 
                                 placeholder="Warmup Welcome" 
                                 className="search-box"  
+                               value={threads[0].subject}
                                 style={{ 
                                     color: mode === 'dark' ? 'white' : 'black', 
                                     backgroundColor: mode === 'dark' ? '#25262B' : 'white',

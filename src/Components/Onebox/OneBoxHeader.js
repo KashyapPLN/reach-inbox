@@ -3,8 +3,14 @@ import './onebox.css';
 import eclipse from '../../media/eclipse.svg';
 import sun from '../../media/sun.svg';
 import { Dropdown } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 export default function OneBoxHeader({mode,setMode}) {
+  const navigate=useNavigate();
+  function logout(){
+    localStorage.clear();
+    navigate('/login');
+  }
   return (
     <div className='content-header' style={{backgroundColor:mode==='dark'? '#1F1F1F':'white'}}>
     <div id='header-text'style={{color:mode==='dark'? 'white':'black'}}>Onebox</div>
@@ -43,10 +49,11 @@ className="custom-dropdown-toggle"
 Tim's workspace
 </Dropdown.Toggle>
 
-<Dropdown.Menu>
-<Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-<Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-<Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+<Dropdown.Menu style={{ 
+   backgroundColor: mode === 'dark' ? '#25262B' : 'white',
+}}>
+<Dropdown.Item style={{color:mode==='dark'? 'white' : 'black',backgroundColor:'transparent'}}
+ onClick={()=>logout()}>Logout</Dropdown.Item>
 </Dropdown.Menu>
 </Dropdown>
     </div>

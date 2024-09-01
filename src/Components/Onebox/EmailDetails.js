@@ -1,5 +1,6 @@
 import React from 'react';
 import './emailDetails.css';
+import { IoIosSend } from 'react-icons/io';
 
 export default function EmailDetail({mode}) {
   return (
@@ -28,9 +29,9 @@ Lead Details
 </div>
 <p><strong>Campaign Name:</strong> 3 Steps | 5 Days in Sequence</p>
         <ul>
-          <li><strong>Step 1:</strong> Email - Sent 3rd Feb</li>
-          <li><strong>Step 2:</strong> Email - Opened 5th Feb</li>
-          <li><strong>Step 3:</strong> Email - Opened 5th Feb</li>
+          <li><strong>Step 1:</strong> Email -<p style={{color:'grey',fontSize:'14px'}}> <IoIosSend /> Sent 3rd Feb</p></li>
+          <li><strong>Step 2:</strong> Email -<p style={{color:'grey',fontSize:'14px'}}> <IoIosSend /> Opened 5th Feb</p></li>
+          <li><strong>Step 3:</strong> Email -<p style={{color:'grey',fontSize:'14px'}}> <IoIosSend /> Opened 5th Feb</p></li>
         </ul>
      </div >
     </div>

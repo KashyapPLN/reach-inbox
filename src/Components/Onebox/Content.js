@@ -10,7 +10,6 @@ import Reply from './Reply';
 export default function Content({mode,threadId}) {
 const [threads,setThreads]=useState(null);
 const [show,setShow]=useState(false);
-const handleClose = () => setShow(false);
 const handleShow = () => setShow(true);
   useEffect(()=>{
    
@@ -40,6 +39,25 @@ const handleShow = () => setShow(true);
     }
    
   },[threadId])
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      console.log(`Key pressed: ${event.key}, Target element: ${event.target.tagName}`);
+
+      // Check if the 'R' key is pressed (event.key might be lowercase 'r')
+      if (event.key.toLowerCase() === 'r' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA'&&threads.length>0) {
+        handleShow();
+      }
+    };
+
+    // Add the event listener
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   function formatDate(date){
         const localDate = new Date(date);  
@@ -129,7 +147,7 @@ style={{
 </div>)}
 {threads && <button className='create-account mt-4' onClick={handleShow}>
   <MdReply className='me-1'style={{fontSize:'20px'}} />Reply</button>}
-{threads&&<Reply mode={mode} handleClose={handleClose} handleShow={handleShow} show={show}/>}
+{threads&&<Reply mode={mode} setShow={setShow} handleShow={handleShow} show={show} threadId={threadId} threads={threads}/>}
 </div>
 
     </div>
