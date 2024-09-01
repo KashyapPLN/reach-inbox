@@ -95,6 +95,7 @@ const handleDeleteClose = () => setDeleteShow(false);
         console.log('Mail deleted successfully');
         const data = await response.json();
         handleDeleteClose();
+        window.location.reload();
         console.log(data);
       } else {
         console.error('Failed to delete mail:', response.status);
