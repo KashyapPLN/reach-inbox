@@ -46,9 +46,7 @@ const handleDeleteClose = () => setDeleteShow(false);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      console.log(`Key pressed: ${event.key}, Target element: ${event.target.tagName}`);
-
-      // Check if the 'R' key is pressed (event.key might be lowercase 'r')
+           // Check if the 'R' key is pressed (event.key might be lowercase 'r')
       if (event.key.toLowerCase() === 'r' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA'&&threads) {
         handleShow();
       }
@@ -65,8 +63,7 @@ const handleDeleteClose = () => setDeleteShow(false);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      console.log(`Key pressed: ${event.key}, Target element: ${event.target.tagName}`);
-
+      
       // Check if the 'D' key is pressed (event.key might be lowercase 'r')
       if (event.key.toLowerCase() === 'd' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA'&&threads) {
         handleDeleteShow();
