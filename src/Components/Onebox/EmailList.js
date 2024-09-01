@@ -7,12 +7,37 @@ import interestedTxt from '../../media/interested-txt.svg';
 import interestedIcon from '../../media/interested-icon.svg';
 
 export default function EmailList({ mode,allMails,threadId,setThreadId }) {
+  
   function formatDateToShortDate(isoDate) {
     const date = new Date(isoDate);
 
     const options = { month: 'short', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
 }
+
+async function handleReload(){
+  console.log("hello")
+  const key= localStorage.getItem('token');
+  const url = 'https://hiring.reachinbox.xyz/api/v1/onebox/reset';
+  if(key){
+    try {
+      const response = await fetch(url,{headers:{
+        Authorization: `Bearer ${key}`
+      }});
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      window.location.reload();
+              console.log(data);
+            
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+}
+
   return (
     <div className="email-list" style={{ color: mode === 'dark' ? 'white' : 'black' }}>
       <div className='email-list-top'>
@@ -26,7 +51,7 @@ export default function EmailList({ mode,allMails,threadId,setThreadId }) {
           <button className='reload-btn mt-3' style={{
             color: mode === 'dark' ? 'white' : 'black', backgroundColor: mode === 'dark' ? '#25262B' : 'white',
             border: mode === 'dark' ? 'none' : '1px solid black'
-          }}><IoReload /></button>
+          }} onClick={handleReload}><IoReload /></button>
         </div>
         <input className='search-box mt-3' type='search' style={{ color: mode === 'dark' ? 'white' : 'black', backgroundColor: mode === 'dark' ? '#25262B' : 'white' }} placeholder=' Search' />
         <div className='replies-div mt-3'>

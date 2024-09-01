@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './content.css';
-import { Dropdown } from 'react-bootstrap';
+import { Button, Dropdown, Modal } from 'react-bootstrap';
 import yellow from  '../../media/yellow.svg'
 import { IoIosMore } from 'react-icons/io';
 import { MdDeleteOutline, MdEdit, MdMarkunreadMailbox, MdPersonRemove, MdReply } from 'react-icons/md';
@@ -11,6 +11,10 @@ export default function Content({mode,threadId}) {
 const [threads,setThreads]=useState(null);
 const [show,setShow]=useState(false);
 const handleShow = () => setShow(true);
+const [deleteShow,setDeleteShow]=useState(false);
+const handleDeleteShow = () => setDeleteShow(true);
+const handleDeleteClose = () => setDeleteShow(false);
+
   useEffect(()=>{
    
     async function getAllThreads(){
@@ -45,7 +49,7 @@ const handleShow = () => setShow(true);
       console.log(`Key pressed: ${event.key}, Target element: ${event.target.tagName}`);
 
       // Check if the 'R' key is pressed (event.key might be lowercase 'r')
-      if (event.key.toLowerCase() === 'r' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA'&&threads.length>0) {
+      if (event.key.toLowerCase() === 'r' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA'&&threads) {
         handleShow();
       }
     };
@@ -57,7 +61,51 @@ const handleShow = () => setShow(true);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [threads]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      console.log(`Key pressed: ${event.key}, Target element: ${event.target.tagName}`);
+
+      // Check if the 'D' key is pressed (event.key might be lowercase 'r')
+      if (event.key.toLowerCase() === 'd' && event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA'&&threads) {
+        handleDeleteShow();
+      }
+    };
+
+    // Add the event listener
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [threads]);
+
+  async function handleDeleteThread(){
+    const key= localStorage.getItem('token');
+    const url = `https://hiring.reachinbox.xyz/api/v1/onebox/messages/${threadId}`
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+       Authorization: `Bearer ${key}`
+        },
+      });
+  
+      // Check if the response is successful
+      if (response.ok) {
+        console.log('Mail deleted successfully');
+        const data = await response.json();
+        handleDeleteClose();
+        console.log(data);
+      } else {
+        console.error('Failed to delete mail:', response.status);
+      }
+    } catch (error) {
+      console.error('Error occurred while deleting mail:', error);
+    }
+  }
 
   function formatDate(date){
         const localDate = new Date(date);  
@@ -148,6 +196,25 @@ style={{
 {threads && <button className='create-account mt-4' onClick={handleShow}>
   <MdReply className='me-1'style={{fontSize:'20px'}} />Reply</button>}
 {threads&&<Reply mode={mode} setShow={setShow} handleShow={handleShow} show={show} threadId={threadId} threads={threads}/>}
+
+<Modal  centered show={deleteShow} onHide={handleDeleteClose} className={mode === 'dark' ? 'modal-dark' : 'modal-light'} 
+                style={{ border: '1px solid #41464B'}}>
+        {/* <Modal.Header closeButton>
+          <Modal.Title>Delete</Modal.Title>
+        </Modal.Header> */}
+        <Modal.Body style={{textAlign:'center'}}>
+          <h3>Are you sure ?</h3>
+<p className='mt-2'>Your selected email will be deleted</p>
+<div className='mt-4'>
+<Button className='me-3' variant="secondary" onClick={handleDeleteClose}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleDeleteThread}>
+            Delete
+          </Button>
+</div>
+        </Modal.Body>
+          </Modal>
 </div>
 
     </div>
